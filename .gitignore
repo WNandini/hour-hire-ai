@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+#backend 
+server/node_modules
+server/dist
+
 # production
 /build
 
