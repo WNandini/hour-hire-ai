@@ -115,7 +115,12 @@ app.post("/api/find-jobs", upload.single("resume"), async (req, res) => {
         "location": "",
         "skills": [],
         "searchQuery": "",
-        "seniority": ""
+        "seniority": "",
+        "resumeScore": 0,
+        "strengths": [],
+        "weaknesses": [],
+        "missingSkills": [],
+        "recommendations": []
       }
 
       Rules:
@@ -147,9 +152,10 @@ app.post("/api/find-jobs", upload.single("resume"), async (req, res) => {
       {
         params: {
           query: 'Full Stack AI Engineer India',
-          page: "1",
+          page: "4",
           num_pages: "1",
           country: "in",
+          date_posted: '3days'
         },
         headers: {
           'x-rapidapi-key': process.env.RAPID_API_KEY,

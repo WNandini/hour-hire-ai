@@ -22,18 +22,18 @@ export default function Header() {
           <Link href="/" className="text-indigo-600 font-semibold relative py-1 after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-indigo-600 after:rounded-full">
             Home
           </Link>
-          <Link href="/features" className="hover:text-indigo-600 transition-colors">
+          {/* <Link href="/features" className="hover:text-indigo-600 transition-colors">
             Features
           </Link>
           <Link href="/about" className="hover:text-indigo-600 transition-colors">
             About
-          </Link>
+          </Link> */}
         </nav>
 
         {/* CTA */}
-        <Link href="/jobs" className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors shadow-sm">
+        {/* <Link href="/jobs" className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors shadow-sm">
           Get Started
-        </Link>
+        </Link> */}
       </div>
     </header>
   );

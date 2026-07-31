@@ -1,11 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { useJobContext } from '@/context/JobContext';
+import { JobDescription } from '../components/jobDescription';
 
 export default function JobsPage() {
+  const { candidate, jobs } = useJobContext();
+
+  const handleApplyNow = (job: any) => {
+    if (job.job_apply_link) {
+      window.open(job.job_apply_link, "_blank", "noopener,noreferrer");
+    } else {
+      alert("Application link is not available for this job.");
+    }
+  };
   return (
-    <div className="min-h-screen bg-[#faf9ff] text-slate-800 font-sans">    
+    <div className="min-h-screen bg-[#faf9ff] text-slate-800 font-sans">
 
       {/* ---------------- MAIN DASHBOARD LAYOUT ---------------- */}
       <main className="max-w-7xl mx-auto px-6 py-8">
@@ -13,30 +24,28 @@ export default function JobsPage() {
 
           {/* ================= LEFT SIDEBAR (USER PROFILE) ================= */}
           <aside className="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-6">
-            
+
             {/* User Avatar & Info */}
             <div className="flex flex-col items-center text-center">
               <div className="relative mb-3">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
-                  alt="Alex Rivers"
-                  className="w-20 h-20 rounded-full object-cover ring-2 ring-slate-100"
-                />
+                <div className="w-20 h-20 rounded-full bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold uppercase ring-2 ring-slate-100 shadow-sm">
+                  {candidate.name ? candidate.name.charAt(0) : '?'}
+                </div>
                 <span className="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
               </div>
-              <h2 className="text-xl font-extrabold text-slate-900">Alex Rivers</h2>
-              <p className="text-slate-500 text-sm font-medium">Senior Frontend Engineer</p>
+              <h2 className="text-xl font-extrabold text-slate-900">{candidate.name}</h2>
+              <p className="text-slate-500 text-sm font-medium">{candidate.role}</p>
             </div>
 
             {/* Stats (Exp / Location) */}
             <div className="grid grid-cols-2 gap-4 py-3 border-y border-slate-100 text-center">
               <div>
-                <p className="text-xs text-slate-400 font-medium">Exp</p>
-                <p className="text-base font-bold text-indigo-950">8 yrs</p>
+                <p className="text-xs text-slate-400 font-medium">Experience</p>
+                <p className="text-base font-bold text-indigo-950">{candidate.experience}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-400 font-medium">Loc</p>
-                <p className="text-base font-bold text-indigo-950">SF</p>
+                <p className="text-xs text-slate-400 font-medium">Location</p>
+                <p className="text-base font-bold text-indigo-950">{candidate.location}</p>
               </div>
             </div>
 
@@ -44,18 +53,17 @@ export default function JobsPage() {
             <div className="space-y-2.5">
               <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider">Skills</h3>
               <div className="flex flex-wrap gap-2">
-                <span className="bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full">React</span>
-                <span className="bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full">Next.js</span>
-                <span className="bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full">Tailwind</span>
-                <span className="bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full">TypeScript</span>
+                {candidate.skills.map((skill: string) =>
+                  <span className="bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full">{skill}</span>
+                )}
               </div>
             </div>
 
             {/* Resume Score */}
-            <div className="text-center pt-2 pb-1 space-y-1">
+            {/* <div className="text-center pt-2 pb-1 space-y-1">
               <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider">Resume Score</h3>
-              <div className="text-4xl font-black text-indigo-600">92%</div>
-            </div>
+              <div className="text-4xl font-black text-indigo-600">{candidate.resumeScore}</div>
+            </div> */}
 
             {/* Strengths & Missing Skills */}
             <div className="space-y-3 pt-2 text-xs">
@@ -66,7 +74,9 @@ export default function JobsPage() {
                   </svg>
                   Strengths
                 </p>
-                <p className="text-slate-600 font-medium pl-5">UI/UX Architecture &nbsp; Performance Opt</p>
+                {candidate.strengths.map((strength: string) =>
+                  <p className="text-slate-600 font-medium pl-5">{strength}</p>
+                )}
               </div>
 
               <div>
@@ -77,21 +87,23 @@ export default function JobsPage() {
                   Missing Skills
                 </p>
                 <div className="flex gap-2 pl-5">
-                  <span className="bg-red-50 text-red-600 font-semibold px-2.5 py-0.5 rounded border border-red-100">Docker</span>
+                  {candidate.missingSkills.map((missingSkill: string) =>
+                    <span className="bg-red-50 text-red-600 font-semibold px-2.5 py-0.5 rounded border border-red-100">Docker</span>
+                  )}
                   <span className="bg-red-50 text-red-600 font-semibold px-2.5 py-0.5 rounded border border-red-100">AWS</span>
                 </div>
               </div>
             </div>
 
             {/* Upload Button */}
-            <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm transition-colors shadow-sm">
+            {/* <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm transition-colors shadow-sm">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="17 8 12 3 7 8" />
                 <line x1="12" y1="3" x2="12" y2="15" />
               </svg>
               Upload New Resume
-            </button>
+            </button> */}
 
           </aside>
 
@@ -101,7 +113,7 @@ export default function JobsPage() {
 
             {/* Search & Filters Toolbar */}
             <div className="bg-white rounded-2xl border border-slate-200/80 p-3 shadow-sm flex flex-wrap items-center gap-3">
-              
+
               {/* Search Box */}
               <div className="flex-1 min-w-[200px] relative">
                 <svg className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -159,152 +171,66 @@ export default function JobsPage() {
             <div className="space-y-5">
 
               {/* CARD 1 */}
-              <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4 hover:border-slate-300 transition-all">
-                
-                {/* Header Row */}
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center justify-center p-2">
-                      <svg className="w-7 h-7 text-slate-800" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M24 12l-5.657 5.657-1.414-1.414L21.172 12l-4.243-4.243 1.414-1.414L24 12zM0 12l5.657-5.657 1.414 1.414L2.828 12l4.243 4.243-1.414 1.414L0 12zm14.586-8l-5.172 16h-2.12l5.172-16h2.12z" />
-                      </svg>
+              {jobs.map((item) =>
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4 hover:border-slate-300 transition-all">
+
+                  {/* Header Row */}
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center justify-center p-2">
+                        <svg className="w-7 h-7 text-slate-800" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M24 12l-5.657 5.657-1.414-1.414L21.172 12l-4.243-4.243 1.414-1.414L24 12zM0 12l5.657-5.657 1.414 1.414L2.828 12l4.243 4.243-1.414 1.414L0 12zm14.586-8l-5.172 16h-2.12l5.172-16h2.12z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-slate-900">{item.job_title}</h3>
+                        <p className="text-xs text-slate-500 font-medium">{item.employer_name} • <span className="text-slate-600 font-semibold">{item.job_location}</span></p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900">Senior Frontend Engineer</h3>
-                      <p className="text-xs text-slate-500 font-medium">Vercel • <span className="text-slate-600 font-semibold">Remote</span></p>
+
+                    <div className="text-right">
+                      <span className="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full inline-block mb-1">
+                        Matched - {item.matchScore}%
+                      </span>
                     </div>
                   </div>
 
-                  <div className="text-right">
-                    <span className="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full inline-block mb-1">
-                      95% Match
-                    </span>
-                    <p className="text-sm font-bold text-slate-900">$160k - $210k</p>
+                  <div className="pt-2 border-slate-10">
+                    <JobDescription description={item.job_description} postedDate={item.job_posted_at} />
                   </div>
-                </div>
 
-                {/* AI Explanation Callout */}
-                <div className="bg-indigo-50/50 border border-indigo-100/80 rounded-xl p-4 text-xs space-y-2">
-                  <p className="text-slate-700 font-medium leading-relaxed flex items-start gap-1.5">
-                    <span className="text-indigo-600 font-bold shrink-0">✨ Excellent match</span>
-                    <span>because your React, Next.js and TypeScript experience aligns perfectly with this role's core requirements.</span>
-                  </p>
-                  <div className="flex items-center gap-2 pt-1 text-[11px]">
-                    <span className="text-slate-400 font-medium">Missing:</span>
-                    <span className="bg-slate-200/70 text-slate-700 font-semibold px-2 py-0.5 rounded">Docker</span>
-                    <span className="bg-slate-200/70 text-slate-700 font-semibold px-2 py-0.5 rounded">AWS</span>
+                  {/* AI Explanation Callout */}
+                  <div className="bg-indigo-50/50 border border-indigo-100/80 rounded-xl p-4 text-xs space-y-2">
+                    <p className="text-slate-700 font-medium leading-relaxed flex items-start gap-1.5">
+                      <span className="text-indigo-600 font-bold shrink-0">✨ Excellent match</span>
+                      <span>{item.reason}</span>
+                    </p>
+                    <div className="flex items-center gap-2 pt-1 text-[11px]">
+                      <span className="text-slate-400 font-medium">Missing:</span>
+                      {item.missingSkills.map((skils: string) =>
+                        <span className="bg-slate-200/70 text-slate-700 font-semibold px-2 py-0.5 rounded">{skils}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Card Actions */}
-                <div className="flex items-center justify-end gap-3 pt-1">
-                  <button className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold px-5 py-2.5 rounded-xl transition-colors">
+                  {/* Card Actions */}
+                  <div className="flex items-center justify-end gap-3 pt-1">
+                    {/* <button className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold px-5 py-2.5 rounded-xl transition-colors">
                     View Details
-                  </button>
-                  <button className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-6 py-2.5 rounded-xl transition-colors shadow-sm">
-                    Apply Now
-                  </button>
-                </div>
-
-              </div>
-
-
-              {/* CARD 2 */}
-              <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4 hover:border-slate-300 transition-all">
-                
-                {/* Header Row */}
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 bg-emerald-50 rounded-xl border border-emerald-100 flex items-center justify-center p-2">
-                      <svg className="w-6 h-6 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900">Frontend Architect</h3>
-                      <p className="text-xs text-slate-500 font-medium">Supabase • <span className="text-slate-600 font-semibold">Remote</span></p>
-                    </div>
+                  </button> */}
+                    <button
+                      onClick={() => handleApplyNow(item)}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-6 py-2.5 rounded-xl transition-colors shadow-sm">
+                      Apply Now
+                    </button>
                   </div>
 
-                  <div className="text-right">
-                    <span className="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full inline-block mb-1">
-                      91% Match
-                    </span>
-                    <p className="text-sm font-bold text-slate-900">$180k - $230k</p>
-                  </div>
                 </div>
-
-                {/* AI Explanation Callout */}
-                <div className="bg-indigo-50/50 border border-indigo-100/80 rounded-xl p-4 text-xs">
-                  <p className="text-slate-700 font-medium leading-relaxed flex items-start gap-1.5">
-                    <span className="text-indigo-600 font-bold shrink-0">✨ High match</span>
-                    <span>in technical leadership and system design. Your architectural approach to Next.js fits their infrastructure needs.</span>
-                  </p>
-                </div>
-
-                {/* Card Actions */}
-                <div className="flex items-center justify-end gap-3 pt-1">
-                  <button className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold px-5 py-2.5 rounded-xl transition-colors">
-                    View Details
-                  </button>
-                  <button className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-6 py-2.5 rounded-xl transition-colors shadow-sm">
-                    Apply Now
-                  </button>
-                </div>
-
-              </div>
-
-
-              {/* CARD 3 */}
-              <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4 hover:border-slate-300 transition-all">
-                
-                {/* Header Row */}
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3.5">
-                    <div className="w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center font-black text-lg">
-                      L
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-900">Product Engineer</h3>
-                      <p className="text-xs text-slate-500 font-medium">Linear • <span className="text-slate-600 font-semibold">San Francisco</span></p>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <span className="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full inline-block mb-1">
-                      88% Match
-                    </span>
-                    <p className="text-sm font-bold text-slate-900">$150k - $190k</p>
-                  </div>
-                </div>
-
-                {/* AI Explanation Callout */}
-                <div className="bg-indigo-50/50 border border-indigo-100/80 rounded-xl p-4 text-xs">
-                  <p className="text-slate-700 font-medium leading-relaxed flex items-start gap-1.5">
-                    <span className="text-indigo-600 font-bold shrink-0">✨ Strong candidate</span>
-                    <span>for their design-obsessed culture. Your UI/UX strengths match their high bar for polish.</span>
-                  </p>
-                </div>
-
-                {/* Card Actions */}
-                <div className="flex items-center justify-end gap-3 pt-1">
-                  <button className="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold px-5 py-2.5 rounded-xl transition-colors">
-                    View Details
-                  </button>
-                  <button className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-6 py-2.5 rounded-xl transition-colors shadow-sm">
-                    Apply Now
-                  </button>
-                </div>
-
-              </div>
-
+              )}
             </div>
-
           </section>
-
         </div>
       </main>
-
     </div>
   );
 }
