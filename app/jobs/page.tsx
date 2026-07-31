@@ -29,23 +29,23 @@ export default function JobsPage() {
             <div className="flex flex-col items-center text-center">
               <div className="relative mb-3">
                 <div className="w-20 h-20 rounded-full bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold uppercase ring-2 ring-slate-100 shadow-sm">
-                  {candidate.name ? candidate.name.charAt(0) : '?'}
+                  {candidate?.name ? candidate?.name.charAt(0) : '?'}
                 </div>
                 <span className="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
               </div>
-              <h2 className="text-xl font-extrabold text-slate-900">{candidate.name}</h2>
-              <p className="text-slate-500 text-sm font-medium">{candidate.role}</p>
+              <h2 className="text-xl font-extrabold text-slate-900">{candidate?.name}</h2>
+              <p className="text-slate-500 text-sm font-medium">{candidate?.role}</p>
             </div>
 
             {/* Stats (Exp / Location) */}
             <div className="grid grid-cols-2 gap-4 py-3 border-y border-slate-100 text-center">
               <div>
                 <p className="text-xs text-slate-400 font-medium">Experience</p>
-                <p className="text-base font-bold text-indigo-950">{candidate.experience}</p>
+                <p className="text-base font-bold text-indigo-950">{candidate?.experience}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-400 font-medium">Location</p>
-                <p className="text-base font-bold text-indigo-950">{candidate.location}</p>
+                <p className="text-base font-bold text-indigo-950">{candidate?.location}</p>
               </div>
             </div>
 
@@ -53,7 +53,7 @@ export default function JobsPage() {
             <div className="space-y-2.5">
               <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider">Skills</h3>
               <div className="flex flex-wrap gap-2">
-                {candidate.skills.map((skill: string) =>
+                {candidate?.skills.map((skill: string) =>
                   <span className="bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full">{skill}</span>
                 )}
               </div>
@@ -62,7 +62,7 @@ export default function JobsPage() {
             {/* Resume Score */}
             {/* <div className="text-center pt-2 pb-1 space-y-1">
               <h3 className="text-xs uppercase font-bold text-slate-400 tracking-wider">Resume Score</h3>
-              <div className="text-4xl font-black text-indigo-600">{candidate.resumeScore}</div>
+              <div className="text-4xl font-black text-indigo-600">{candidate?.resumeScore}</div>
             </div> */}
 
             {/* Strengths & Missing Skills */}
@@ -74,7 +74,7 @@ export default function JobsPage() {
                   </svg>
                   Strengths
                 </p>
-                {candidate.strengths.map((strength: string) =>
+                {candidate?.strengths.map((strength: string) =>
                   <p className="text-slate-600 font-medium pl-5">{strength}</p>
                 )}
               </div>
@@ -87,7 +87,7 @@ export default function JobsPage() {
                   Missing Skills
                 </p>
                 <div className="flex gap-2 pl-5">
-                  {candidate.missingSkills.map((missingSkill: string) =>
+                  {candidate?.missingSkills.map((missingSkill: string) =>
                     <span className="bg-red-50 text-red-600 font-semibold px-2.5 py-0.5 rounded border border-red-100">Docker</span>
                   )}
                   <span className="bg-red-50 text-red-600 font-semibold px-2.5 py-0.5 rounded border border-red-100">AWS</span>
@@ -171,7 +171,7 @@ export default function JobsPage() {
             <div className="space-y-5">
 
               {/* CARD 1 */}
-              {jobs.map((item) =>
+              {jobs?.map((item) =>
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4 hover:border-slate-300 transition-all">
 
                   {/* Header Row */}

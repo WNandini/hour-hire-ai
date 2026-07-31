@@ -85,7 +85,7 @@ setError(null);
     );
     console.log("response",response)
     setCandidate(response.data.candidate);
-    setJobs(response.data.jobs)
+    setJobs(response?.data?.jobs)
     router.push("/jobs");
   } catch (error) {
     console.error(error);
