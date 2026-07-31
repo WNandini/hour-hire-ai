@@ -1,10 +1,11 @@
+// @ts-nocheck
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const fs = require("fs");
 const multer = require("multer");
 
-// const { GoogleGenAI } = require("@google/genai");
+const { GoogleGenAI } = require("@google/genai");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
@@ -21,10 +22,8 @@ app.use(express.json());
 // =============================
 // Gemini Configuration
 // =============================
-const Groq = require("groq-sdk");
-
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 // =============================
@@ -124,19 +123,12 @@ app.post("/api/find-jobs", upload.single("resume"), async (req, res) => {
       - Do not explain anything.
       `;
 
-    const response = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 0,
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt
     });
-    const aiText = response.choices[0].message.content;
     const candidate = JSON.parse(
-      aiText
+      response.text
         .replace(/```json/g, "")
         .replace(/```/g, "")
         .trim()
@@ -198,25 +190,18 @@ app.post("/api/find-jobs", upload.single("resume"), async (req, res) => {
       - Return only JSON.
       `;
 
-    const matchResponse = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [
-        {
-          role: "user",
-          content: matchPrompt,
-        },
-      ],
-      temperature: 0,
+    const matchResponse = await ai.models.generateContent({
+      model: "gemini-2.5-pro",
+      contents: matchPrompt,
     });
-    const cleanResponse = matchResponse.choices[0].message.content
+    const matchedJobs = matchResponse.text
       .replace(/```json/g, "")
       .replace(/```/g, "")
       .trim();
-
-    const matchedJobs = JSON.parse(cleanResponse);
+    console.log("matchedJobs------------------",matchedJobs)
 
     const finalJobs = jobs.map((job, index) => {
-      const match = matchedJobs.find((m) => m.id === index + 1);
+    const match = matchedJobs.find((m) => m.id === index + 1);
 
       return {
         ...job,
