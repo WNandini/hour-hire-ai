@@ -79,7 +79,6 @@ export default function HomePage() {
       const formData = new FormData();
       formData.append("resume", file);
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      console.log('process',process.env.NEXT_PUBLIC_API_URL)
         const response = await axios.post(
        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/find-jobs`,
           formData
