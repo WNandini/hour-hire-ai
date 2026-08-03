@@ -79,15 +79,10 @@ export default function HomePage() {
       const formData = new FormData();
       formData.append("resume", file);
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      const response = await axios.post(
-        `${API_URL}/api/find-jobs`,
-        formData
-      );
-      //   const response = await axios.post(
-      //     // "/api/find-jobs",
-      //  `${process.env.NEXT_PUBLIC_API_URL}/api/find-jobs`,
-      //     formData
-      //   );
+        const response = await axios.post(
+       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/find-jobs`,
+          formData
+        );
       setJobs(response?.data?.jobs)
       setCandidate(response?.data?.candidate)
       router.push("/jobs");
