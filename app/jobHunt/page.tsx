@@ -21,7 +21,6 @@ const searchJobs = async () => {
     //     date_posted: postedWithin,
     //   },
     // });
-    
      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/jobs`, {
       params: {
         query: `${keyword} jobs in ${location}`,
