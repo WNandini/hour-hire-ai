@@ -37,23 +37,6 @@ const upload = multer({
 // =============================
 // Swagger Configuration
 // =============================
-// const swaggerOptions = {
-//   definition: {
-//     openapi: "3.0.0",
-//     info: {
-//       title: "HourHire API",
-//       version: "1.0.0",
-//       description: "AI Powered Job Portal APIs",
-//     },
-//     servers: [
-//       {
-//         url: "http://localhost:5000",
-//       },
-//     ],
-//   },
-//   apis: ["./server.js"],
-// };
-
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -62,7 +45,7 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "AI Powered Job Portal APIs",
     },
-    servers: [
+     servers: [
       {
         url: process.env.VERCEL_URL 
           ? `https://${process.env.VERCEL_URL}` 

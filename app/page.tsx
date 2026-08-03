@@ -73,22 +73,28 @@ export default function HomePage() {
       setError("Please upload a resume first.");
       return;
     }
-setLoading(true);
-setError(null);
+    setLoading(true);
+    setError(null);
     try {
-    const formData = new FormData();
-    formData.append("resume", file);
-
-    const response = await axios.post(
-      "/api/find-jobs",
-      formData
-    );
-    setCandidate(response.data.candidate);
-    setJobs(response?.data?.jobs)
-    router.push("/jobs");
-  } catch (error) {
-    console.error(error);
-  } finally {
+      const formData = new FormData();
+      formData.append("resume", file);
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      const response = await axios.post(
+        `${API_URL}/api/find-jobs`,
+        formData
+      );
+      //   const response = await axios.post(
+      //     // "/api/find-jobs",
+      //  `${process.env.NEXT_PUBLIC_API_URL}/api/find-jobs`,
+      //     formData
+      //   );
+      setJobs(response?.data?.jobs)
+      setCandidate(response?.data?.candidate)
+      router.push("/jobs");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      // 3. Reset loading state when done (or on error)
       setLoading(false);
     }
   };
@@ -135,8 +141,8 @@ setError(null);
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
                 className={`w-full bg-white border-2 border-dashed rounded-2xl p-8 md:p-10 flex flex-col items-center justify-center gap-2 shadow-sm transition-colors ${isDragging
-                    ? 'border-indigo-600 bg-indigo-50/50'
-                    : 'border-slate-300 hover:border-indigo-400'
+                  ? 'border-indigo-600 bg-indigo-50/50'
+                  : 'border-slate-300 hover:border-indigo-400'
                   }`}
               >
                 <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-1">
@@ -214,45 +220,45 @@ setError(null);
           {/* <Link href="/jobs" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-150 text-center shadow-md hover:shadow-lg">
             Find AI Matched Jobs 🚀
           </Link> */}
-{/* <button
+          {/* <button
   onClick={handleFindJobs}
   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-150 text-center shadow-md hover:shadow-lg"
 >
   Find AI Matched Jobs 🚀
 </button> */}
-<button
-        onClick={handleFindJobs}
-        disabled={loading}
-        className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-150 text-center shadow-md hover:shadow-lg disabled:cursor-not-allowed flex items-center justify-center gap-2"
-      >
-        {loading ? (
-          <>
-            <svg
-              className="animate-spin h-5 w-5 text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-            <span>Finding Best Matches...</span>
-          </>
-        ) : (
-          <span>Find AI Matched Jobs 🚀</span>
-        )}
-      </button>
+          <button
+            onClick={handleFindJobs}
+            disabled={loading}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-150 text-center shadow-md hover:shadow-lg disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                <span>Finding Best Matches...</span>
+              </>
+            ) : (
+              <span>Find AI Matched Jobs 🚀</span>
+            )}
+          </button>
           {/* Social Proof */}
           <p className="text-slate-400 text-xs mt-3">
             Joined by 10,000+ professionals this month

@@ -7,7 +7,7 @@ import { JobDescription } from '../components/jobDescription';
 
 export default function JobsPage() {
   const { candidate, jobs } = useJobContext();
-
+  console.log('candidate',candidate)
   const handleApplyNow = (job: any) => {
     if (job.job_apply_link) {
       window.open(job.job_apply_link, "_blank", "noopener,noreferrer");
@@ -15,6 +15,7 @@ export default function JobsPage() {
       alert("Application link is not available for this job.");
     }
   };
+  
   return (
     <div className="min-h-screen bg-[#faf9ff] text-slate-800 font-sans">
 
@@ -172,7 +173,7 @@ export default function JobsPage() {
 
               {/* CARD 1 */}
               {jobs?.map((item) =>
-                <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4 hover:border-slate-300 transition-all">
+                <div key={item.job_id} className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4 hover:border-slate-300 transition-all">
 
                   {/* Header Row */}
                   <div className="flex items-start justify-between gap-4">
