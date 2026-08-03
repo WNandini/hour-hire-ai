@@ -80,17 +80,15 @@ setError(null);
     formData.append("resume", file);
 
     const response = await axios.post(
-      "http://localhost:5000/api/find-jobs",
+      "/api/find-jobs",
       formData
     );
-    console.log("response",response)
     setCandidate(response.data.candidate);
     setJobs(response?.data?.jobs)
     router.push("/jobs");
   } catch (error) {
     console.error(error);
   } finally {
-      // 3. Reset loading state when done (or on error)
       setLoading(false);
     }
   };
