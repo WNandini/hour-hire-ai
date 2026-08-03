@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
     date_posted: 'today'
   },
   headers: {
-    'x-rapidapi-key': '4b14fe333fmshd5c075ae31d6e1cp1bbb40jsnef46e2fadfab',
+    'x-rapidapi-key': process.env.RAPID_API_KEY,,
     'x-rapidapi-host': 'jsearch.p.rapidapi.com',
     'Content-Type': 'application/json'
   }
