@@ -20,7 +20,8 @@ app.use(cors({
   origin: [
     "http://localhost:3000", // Allows your local PC frontend
     "https://hour-hire-ai-phi.vercel.app/" // 👈 CHANGE THIS to YOUR actual Vercel URL
-  ]
+  ],
+  credentials: true
 }));
 app.use(express.json());
 
